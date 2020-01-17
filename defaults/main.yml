@@ -1,0 +1,5 @@
+---
+# defaults file for prtg-server
+
+prtg_server_log: C:\prtg_install.log
+prtg_server_license_name: "prtgtrial"

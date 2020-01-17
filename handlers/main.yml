@@ -1,0 +1,22 @@
+---
+# handlers file for prtg-server
+
+- name: restart prtg core
+  win_service:
+    name: PRTGCoreService
+    state: restarted
+  listen: "restart prtg"
+
+- name: restart prtg probe
+  win_service:
+    name: PRTGProbeService
+    state: restarted
+  listen: "restart prtg"
+
+- name: wait for prtg
+  wait_for:
+    host: "{{ prtg_server_dns }}"
+    port: 443
+    delay: 5
+    sleep: 10
+  delegate_to: localhost

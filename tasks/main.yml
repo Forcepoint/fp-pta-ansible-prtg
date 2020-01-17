@@ -1,0 +1,45 @@
+---
+# tasks file for prtg-server
+
+- name: create the data directories
+  win_file:
+    path: C:\Program Files (x86)\PRTG Network Monitor\cert
+    state: directory
+  notify: "restart prtg"
+
+- name: copy the key
+  win_copy:
+    src: "files/{{ prtg_server_dns }}.key"
+    dest: C:\Program Files (x86)\PRTG Network Monitor\cert\prtg.key
+  notify: "restart prtg"
+
+- name: copy the cert
+  win_copy:
+    src: "files/{{ prtg_server_dns }}.pem"
+    dest: C:\Program Files (x86)\PRTG Network Monitor\cert\prtg.crt
+  notify: "restart prtg"
+
+- name: check if there's a root CA cert being provided
+  local_action: state path=files/root.pem
+  register: stat_root_cert
+
+- name: copy the root CA cert
+  win_copy:
+    src: files/root.pem
+    dest: C:\Program Files (x86)\PRTG Network Monitor\cert\root.pem
+  notify: "restart prtg"
+  when: stat_root_cert.stat.exists
+
+- name: install PRTG
+  win_package:
+    path: "{{ prtg_server_installer }}"
+    product_id: "{{ prtg_server_product_id}}"
+    # Don't break the arguments out into individual lines. I had a crazy hard time getting it to execute the installer properly.
+    arguments: '/SILENT /NORESTART /RESTARTEXITCODE=3010 /NoInitialAutoDisco=1 /LOG={{ prtg_server_log }} /licensekey={{ prtg_server_license_key }} /licensekeyname={{ prtg_server_license_name }} /LANG=English /adminemail={{ prtg_server_admin_email }}'
+  register: prtg_server_install_result
+  notify: "wait for prtg"
+
+- name: reboot if necessary
+  win_reboot:
+  when: prtg_server_install_result.reboot_required
+  notify: "wait for prtg"
