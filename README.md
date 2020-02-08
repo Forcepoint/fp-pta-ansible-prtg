@@ -1,4 +1,4 @@
-# prtg-server
+# prtg
 
 PRTG is a monitoring solution provided by the company Paessler. https://www.paessler.com/prtg
 
@@ -67,8 +67,8 @@ https://www.paessler.com/tools/certificateimporter
 The following files are required to be present. 
 Ensure they're vaulted before committing them to source code control.
 
-* `files/{{ prtg_server_dns }}.key` The private key.
-* `files/{{ prtg_server_dns }}.pem` The web certificate.
+* `files/{{ prtg_dns }}.key` The private key.
+* `files/{{ prtg_dns }}.pem` The web certificate.
 
 ### OPTIONAL
 
@@ -78,20 +78,20 @@ Ensure they're vaulted before committing them to source code control.
 ## Role Variables
 
 ### REQUIRED
-* prtg_server_dns: The DNS name for the PRTG server. This DNS entry must already exist.
-* prtg_server_installer: The download URL For the PRTG EXE installer. 
+* prtg_dns: The DNS name for the PRTG server. This DNS entry must already exist.
+* prtg_installer: The download URL For the PRTG EXE installer. 
   PRTG provides a zip which I didn't want to deal with, so you should unzip and 
   stage the EXE somewhere like Artifactory.
-* prtg_server_product_id: The Product ID as defined in the registry. 
+* prtg_product_id: The Product ID as defined in the registry. 
   If you use version 18.3.43.2323, this is `{5EC294B8-98F8-4C20-BE73-F11A04295CA5}_is1`.
   Sorry, chicken and egg problem. You have to have this to use the win_package module here.
-* prtg_server_admin_email: The email address for the PRTG administrator.
-* prtg_server_license_key: The license key provided by PRTG on their download page. 
+* prtg_admin_email: The email address for the PRTG administrator.
+* prtg_license_key: The license key provided by PRTG on their download page. 
   https://www.paessler.com/download/prtg-download
 
 ### OPTIONAL
-* prtg_server_log: The path for the installation log. Defaults to `C:\prtg_install.log`. Recommend not using spaces in the path.
-* prtg_server_license_name: The name of the license as provided by PRTG on their download page. Default is `prtgtrial`.
+* prtg_log: The path for the installation log. Defaults to `C:\prtg_install.log`. Recommend not using spaces in the path.
+* prtg_license_name: The name of the license as provided by PRTG on their download page. Default is `prtgtrial`.
 
 ## Dependencies
 
@@ -101,13 +101,13 @@ None
 
     - hosts: servers
       vars:
-        prtg_server_dns: prtgmonitor.COMPANY.com
-        prtg_server_installer: "https://artifactory.COMPANY.com/artifactory/software/Paessler/PRTG/18.3.43/prtg.zip!/PRTG%20Network%20Monitor%2018.3.43.2323%20Setup%20(Stable).exe"
-        prtg_server_product_id: "{5EC294B8-98F8-4C20-BE73-F11A04295CA5}_is1"
-        prtg_server_admin_email: "FIRST.LAST@COMPANY.com"
-        prtg_server_license_key: 000014-11111-111111-111111-11111-111111
+        prtg_dns: prtgmonitor.COMPANY.com
+        prtg_installer: "https://artifactory.COMPANY.com/artifactory/software/Paessler/PRTG/18.3.43/prtg.zip!/PRTG%20Network%20Monitor%2018.3.43.2323%20Setup%20(Stable).exe"
+        prtg_product_id: "{5EC294B8-98F8-4C20-BE73-F11A04295CA5}_is1"
+        prtg_admin_email: "FIRST.LAST@COMPANY.com"
+        prtg_license_key: 000014-11111-111111-111111-11111-111111
       roles:
-         - role: prtg-server
+         - role: prtg
 
 ## License
 

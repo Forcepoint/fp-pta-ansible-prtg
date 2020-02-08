@@ -1,5 +1,5 @@
 ---
-# handlers file for prtg-server
+# handlers file for prtg
 
 - name: restart prtg core
   win_service:
@@ -15,7 +15,7 @@
 
 - name: wait for prtg
   wait_for:
-    host: "{{ prtg_server_dns }}"
+    host: "{{ prtg_dns }}"
     port: 443
     delay: 5
     sleep: 10
