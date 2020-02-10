@@ -20,7 +20,7 @@
   notify: "restart prtg"
 
 - name: check if there's a root CA cert being provided
-  local_action: state path=files/root.pem
+  local_action: stat path=files/root.pem
   register: stat_root_cert
 
 - name: copy the root CA cert
