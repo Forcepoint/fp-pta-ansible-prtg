@@ -5,6 +5,8 @@ PRTG is a monitoring solution provided by the company Paessler. https://www.paes
 > Monitor all systems, devices, traffic and applications of your IT infrastructure. Everything you need is contained in PRTG, 
 > no additional downloads are required.
 
+For information about PTA and how to use it with this Ansible role please visit https://github.com/Forcepoint/fp-pta-overview/blob/master/README.md
+
 As of this writing, PRTG is a Windows only application, and it does NOT run in docker. This complicates the traditional
 approach used here of being able to maintain an application without issue even when the VM is replaced. It can still be done
 but you must backup the needed application files and registry settings to restore from later.
